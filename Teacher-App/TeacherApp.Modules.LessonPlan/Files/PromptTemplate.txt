@@ -1,0 +1,5 @@
+Generate a lesson plan from the following curriculum text. Return as JSON in the format: " +
+                        "Grade Starts from "+ GradeStart +" completes on "+GradeEnd +". Excludes this holidays "+ holidayDates+" ."+
+                                   "Planned "+lessonFormat+" lesson plan adjusting calendar  from "+startdate+" to end date is "+endDate+" "+
+                                  "[{\"Date\": \"Lesson Date\",\"ChapterNo\": \"Lesson Number\",\"Domain\": \"Lesson Domain\",\"Title\": \"Lesson Title\", \"Content\": \"Lesson content...\", \"KeyTopics\": [\"topic1\", \"topic2\"], \"Standards\": \"Lesson Standards...\",\"Activities\": \"Lesson Activities...\",\"Assessments\": \"Lesson Assessments...\",\"Material\": \"Lesson Material...\"}]\n\n" +
+                                  "Curriculum Text:\n" 

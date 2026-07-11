@@ -1,0 +1,14 @@
+{
+  "profiles": {
+    "KnowledgeBase": {
+        "commandName": "Project",
+        "launchBrowser": true,
+        "dotnetRunMessages": true,
+        "launchUrl": "swagger",    
+        "environmentVariables": {
+            "ASPNETCORE_ENVIRONMENT": "Development"
+        },
+        "applicationUrl": "https://localhost:52283;http://localhost:52284"
+    }
+  }
+}

@@ -1,0 +1,82 @@
+-- Drop if exists
+DROP TABLE IF EXISTS SchoolGradeSubjects, SchoolGrades, GradeSubjects, GradeMaster, Subjects, Schools, AcademicYear;
+GO
+
+-- Academic Year
+CREATE TABLE AcademicYear (
+    AcademicYearId INT IDENTITY(1,1) PRIMARY KEY,
+    AcademicYear NVARCHAR(9) NOT NULL,
+    IsCurrent BIT NOT NULL DEFAULT 0
+);
+GO
+
+-- Schools
+CREATE TABLE Schools (
+    SchoolId INT IDENTITY(1,1) PRIMARY KEY,
+    SchoolCode VARCHAR(50) NOT NULL UNIQUE,
+    Name VARCHAR(200) NOT NULL,
+    Address VARCHAR(200),
+    StateId INT,
+    DistrictId INT,
+    CityId INT,
+    ZipCode INT,
+    Status INT,
+    Email VARCHAR(200),
+    ContactNumber VARCHAR(20),
+    CreatedBy INT,
+    CreatedDate DATETIME,
+    ModifiedBy INT,
+    ModifiedDate DATETIME,
+    IsActive BIT NOT NULL DEFAULT 1,
+    IsDelete BIT NOT NULL DEFAULT 0
+);
+GO
+
+-- Grade Master
+CREATE TABLE GradeMaster (
+    GradeId INT IDENTITY(1,1) PRIMARY KEY,
+    GradeCode NVARCHAR(50) NOT NULL UNIQUE,
+    GradeName NVARCHAR(100) NOT NULL,
+    GradeType NVARCHAR(50),
+    DisplayOrder INT
+);
+GO
+
+-- Subjects
+CREATE TABLE Subjects (
+    SubjectId INT IDENTITY(1,1) PRIMARY KEY,
+    Subject VARCHAR(100) NOT NULL,
+    SubjectCode VARCHAR(20) NOT NULL UNIQUE
+);
+GO
+
+-- SchoolGrades (per AcademicYear)
+CREATE TABLE SchoolGrades (
+    SchoolGradeId INT IDENTITY(1,1) PRIMARY KEY,
+    SchoolId INT NOT NULL,
+    AcademicYearId INT NOT NULL,
+    GradeId INT NOT NULL, -- FK from GradeMaster
+    EffectiveFrom DATE,
+    EffectiveTo DATE,
+    IsCurrent BIT DEFAULT 1,
+    CreatedDate DATETIME,
+    CreatedBy INT,
+    ModifiedDate DATETIME,
+    ModifiedBy INT,
+    CONSTRAINT FK_SchoolGrades_School FOREIGN KEY (SchoolId) REFERENCES Schools(SchoolId),
+    CONSTRAINT FK_SchoolGrades_Year FOREIGN KEY (AcademicYearId) REFERENCES AcademicYear(AcademicYearId),
+    CONSTRAINT FK_SchoolGrades_Grade FOREIGN KEY (GradeId) REFERENCES GradeMaster(GradeId),
+    CONSTRAINT UQ_School_Grade_Year UNIQUE (SchoolId, AcademicYearId, GradeId)
+);
+GO
+
+-- SchoolGradeSubjects
+CREATE TABLE SchoolGradeSubjects (
+    Id INT IDENTITY(1,1) PRIMARY KEY,
+    SchoolGradeId INT NOT NULL, -- maps to SchoolGrades
+    SubjectId INT NOT NULL,
+    CONSTRAINT FK_SGSubjects_SchoolGrade FOREIGN KEY (SchoolGradeId) REFERENCES SchoolGrades(SchoolGradeId),
+    CONSTRAINT FK_SGSubjects_Subject FOREIGN KEY (SubjectId) REFERENCES Subjects(SubjectId),
+    CONSTRAINT UQ_Grade_Subject UNIQUE (SchoolGradeId, SubjectId)
+);
+GO

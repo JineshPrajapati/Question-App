@@ -1,0 +1,35 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>   
+	
+	<PackageReference Include="ClosedXML" Version="0.105.0" />   
+	
+	<PackageReference Include="itext.bouncy-castle-adapter" Version="9.2.0" />   
+	
+	<PackageReference Include="itext7" Version="9.2.0" />   
+	
+	<PackageReference Include="Microsoft.Extensions.Options" Version="9.0.7" />
+	  <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.2.0" />
+	  <PackageReference Include="Microsoft.Data.SqlClient" Version="6.0.2" />
+	  <PackageReference Include="OpenAI-DotNet" Version="8.8.1" />
+	  <PackageReference Include="PdfPig" Version="0.1.10" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TeacherApp.Modules.KnowledgeBase\TeacherApp.Modules.KnowledgeBase.csproj" />
+    <ProjectReference Include="..\TeacherApp.Modules.Account\TeacherApp.Modules.Account.csproj" />
+    <ProjectReference Include="..\TeacherApp.Modules.Helper\TeacherApp.Modules.Helper.csproj" />
+    <ProjectReference Include="..\TeacherApp.Modules.Repositories\TeacherApp.Modules.Repositories.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Files\" />
+  </ItemGroup>
+
+</Project>

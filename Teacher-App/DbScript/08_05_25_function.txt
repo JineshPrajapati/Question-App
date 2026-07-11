@@ -1,0 +1,117 @@
+USE [TeacherDbClientDemo]
+GO
+/****** Object:  UserDefinedFunction [dbo].[ContructLessonPlanPrompt]    Script Date: 8/5/2025 10:58:18 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+--SELECT [dbo].[ContructLessonPlanPrompt](1,'7',1,4,5,'Weekly',null,null)
+ALTER FUNCTION [dbo].[ContructLessonPlanPrompt]
+(   
+    @AcademicYearId INT,
+	@PeriodValue NVARCHAR(50),
+    @SchoolId INT,
+    @GradeId INT,
+    @SubjectId INT,
+    @LessonFormat NVARCHAR(100),
+    @StartDate DATETIME = NULL,
+    @EndDate DATETIME = NULL
+)
+RETURNS NVARCHAR(MAX)
+AS
+BEGIN
+    DECLARE 
+        @LessonPromptContent NVARCHAR(MAX),
+        @HolidayDates NVARCHAR(MAX),
+        @StartDateStr NVARCHAR(20),
+        @EndDateStr NVARCHAR(20),
+        @GradeStartDateStr NVARCHAR(20),
+        @GradeEndDateStr NVARCHAR(20),
+        @Subject NVARCHAR(200),
+        @AcademicYear NVARCHAR(20),
+        @GradeName NVARCHAR(200),
+		@YearlyLessonPlan NVARCHAR(MAX),
+		@MonthlyLessonPlan NVARCHAR(MAX),
+		@WeeklyLessonPlan NVARCHAR(MAX)
+
+    -- Get Template
+    SELECT @LessonPromptContent = ISNULL(TemplateText, '')
+    FROM [PromptTemplates]
+    WHERE ISNULL(TemplateType, '') = @LessonFormat
+
+	--IF(@LessonFormat IN  ('Monthly'))
+	--BEGIN
+	--	Select Top 1 @MonthlyLessonPlan=PlannedLessonContent  From LessonPlan Where AcademicYearId=@AcademicYearId and SchoolId=@SchoolId and GradeId=@GradeId and SubjectId=@SubjectId and LessonFormat='Monthly'
+	--	IF(ISNULL(@MonthlyLessonPlan,'')='')
+	--	BEGIN
+
+	--	END
+	--END
+
+	IF(@LessonFormat IN  ('Monthly','Weekly'))
+	BEGIN
+	Select Top 1 @YearlyLessonPlan=PlannedLessonContent  From LessonPlan Where AcademicYearId=@AcademicYearId and SchoolId=@SchoolId and GradeId=@GradeId and SubjectId=@SubjectId and LessonFormat='Yearly'
+
+	Select Top 1 @MonthlyLessonPlan=PlannedLessonContent  From LessonPlan Where AcademicYearId=@AcademicYearId and SchoolId=@SchoolId and GradeId=@GradeId and SubjectId=@SubjectId and LessonFormat='Monthly'
+	END
+-----------------------------------------------
+	 IF(@LessonFormat='Weekly' AND ISNULL(@MonthlyLessonPlan,'') <>'' AND  ISNULL(@PeriodValue,'')<>'')
+ BEGIN
+
+     SET  @MonthlyLessonPlan=  (SELECT 
+		JSON_VALUE(value, '$.Period') AS Period,
+    JSON_VALUE(value, '$.Start_Date') AS Start_Date,
+    JSON_VALUE(value, '$.End_Date') AS End_Date,
+    JSON_VALUE(value, '$.Domain_Title') AS Domain_Title,
+    JSON_QUERY(value, '$.Topics') AS Topics,
+    JSON_QUERY(value, '$.Standards') AS Standards,
+    JSON_QUERY(value, '$.Activities') AS Activities,
+    JSON_QUERY(value, '$.Assessments') AS Assessments
+        FROM LessonPlan LP
+        CROSS APPLY OPENJSON(LP.PlannedLessonContent)
+    WHERE JSON_VALUE(value, '$.Period') LIKE @PeriodValue + '%' AND LP.LessonFormat='Monthly'
+        FOR JSON PATH, WITHOUT_ARRAY_WRAPPER)
+	END
+
+----------------------------------------------------------
+	 
+    -- Get Holidays
+    SET @HolidayDates = dbo.fn_GetSchoolHolidays(@AcademicYearId, @SchoolId)
+    SET @LessonPromptContent = REPLACE(@LessonPromptContent, '{SchoolHolidays}', @HolidayDates)
+
+    -- Get metadata values
+    SELECT 
+        @GradeStartDateStr = FORMAT(SG.EffectiveFrom, 'yyyy-MM-dd'),
+        @GradeEndDateStr = FORMAT(SG.EffectiveTo, 'yyyy-MM-dd'),
+        @Subject = Sub.Subject,
+        @AcademicYear = AY.AcademicYear,
+        @GradeName = G.GradeName
+    FROM SchoolGrades SG 
+    INNER JOIN AcademicYear AY ON SG.AcademicYearId = AY.AcademicYearId
+    INNER JOIN  SchoolGradeSubjects GS ON SG.SchoolGradeId = GS.SchoolGradeId 
+    INNER JOIN Grades G ON sg.GradeId = G.GradeId
+		INNER JOIN SchoolGradeSubjects SGS ON sg.SchoolGradeId = SGS.SchoolGradeId
+		INNER JOIN Subjects Sub ON SGS.SubjectId = Sub.SubjectId
+    WHERE SG.AcademicYearId = @AcademicYearId 
+      AND SG.SchoolId = @SchoolId 
+      AND G.GradeId = @GradeId 
+      AND Sub.SubjectId = @SubjectId
+
+    -- Set Start and End Dates with fallback to grade dates
+    SET @StartDateStr = FORMAT(ISNULL(@StartDate, CAST(@GradeStartDateStr AS DATETIME)), 'yyyy-MM-dd')
+    SET @EndDateStr = FORMAT(ISNULL(@EndDate, CAST(@GradeEndDateStr AS DATETIME)), 'yyyy-MM-dd')
+
+    -- Replace placeholders
+    SET @LessonPromptContent = REPLACE(@LessonPromptContent, '{GradeStartDate}', @GradeStartDateStr)
+    SET @LessonPromptContent = REPLACE(@LessonPromptContent, '{GradeEndDate}', @GradeEndDateStr)
+    SET @LessonPromptContent = REPLACE(@LessonPromptContent, '{StartDate}', @StartDateStr)
+    SET @LessonPromptContent = REPLACE(@LessonPromptContent, '{EndDate}', @EndDateStr)
+    SET @LessonPromptContent = REPLACE(@LessonPromptContent, '{Subject}', @Subject)
+    SET @LessonPromptContent = REPLACE(@LessonPromptContent, '{AcademicYear}', @AcademicYear)
+    SET @LessonPromptContent = REPLACE(@LessonPromptContent, '{GradeName}', @GradeName)
+    SET @LessonPromptContent = REPLACE(@LessonPromptContent, '{LessonFormat}', @LessonFormat)
+	SET @LessonPromptContent = REPLACE(@LessonPromptContent, '{YearlyLessonPlan}', @YearlyLessonPlan)
+	SET @LessonPromptContent = REPLACE(@LessonPromptContent, '{MonthlyLessonPlan}', @MonthlyLessonPlan)
+
+    RETURN @LessonPromptContent
+END

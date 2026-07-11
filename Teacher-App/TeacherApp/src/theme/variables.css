@@ -1,0 +1,131 @@
+@import "tailwindcss";
+
+@theme {
+  /* Colors */
+  --color-white: #ffffff;
+  --color-black: #000000;
+  --color-gray-100: #f5f8fa;
+  --color-gray-200: #eff2f5;
+  --color-gray-300: #e4e6ef;
+  --color-gray-400: #b5b5c3;
+  --color-gray-500: #a1a5b7;
+  --color-gray-600: #7e8299;
+  --color-gray-700: #5e6278;
+  --color-gray-800: #3f4254;
+  --color-gray-900: #181c32;
+
+  --blue: #009ef6;
+  --indigo: #6610f2;
+  --purple: #6f42c1;
+  --pink: #d63384;
+  --red: #dc3545;
+  --orange: #fd7e14;
+  --yellow: #ffc107;
+  --green: #198754;
+  --teal: #20c997;
+  --cyan: #0dcaf0;
+
+  --color-primary: #00446d;
+  --color-primary-300: #a89fef;
+  --color-primary-500: #4f39f6ba;
+  --color-primary-200: #d7d3f9;
+  --secondary: var(--gray-300);
+  --success: #1bc5bd;
+  --info: #8950fc;
+  --warning: #ffa800;
+  --danger: #f64e60;
+  --light: var(--gray-100);
+  --dark: var(--gray-900);
+
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-base: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.25rem;
+  --font-size-2xl: 1.5rem;
+  --font-size-3xl: 2rem;
+  --font-size-4xl: 2.25rem;
+  --font-size-5xl: 3rem;
+  --font-size-6xl: 3.75rem;
+  --font-size-7xl: 4.5rem;
+  --font-size-8xl: 6rem;
+  --font-size-9xl: 8rem;
+
+  /* Spacing */
+  --spacer: 1rem;
+  --spacing-0: 0;
+  --spacing-1: calc(var(--spacer) * 0.25);
+  --spacing-2: calc(var(--spacer) * 0.5);
+  --spacing-3: calc(var(--spacer) * 0.75);
+  --spacing-4: calc(var(--spacer) * 1);
+  --spacing-5: calc(var(--spacer) * 1.25);
+  --spacing-6: calc(var(--spacer) * 1.5);
+  --spacing-7: calc(var(--spacer) * 1.75);
+  --spacing-8: calc(var(--spacer) * 2);
+
+  /* Border Radius */
+  --rounded-sm: 0.275rem;
+  --rounded: 0.475rem;
+  --rounded-lg: 0.775rem;
+  --rounded-xl: 1rem;
+
+  /* Line Heights */
+  --line-height-base: 1.5;
+  --line-height-sm: 1.25;
+  --line-height-lg: 1.75;
+
+  /* Shadows */
+  --shadow-sm: 0 0.1rem 1rem rgba(0, 0, 0, 0.05);
+  --shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.075);
+  --shadow-lg: 0 1rem 2rem rgba(0, 0, 0, 0.1);
+
+  --tracking-tighter: -0.05em;
+  --tracking-tight: -0.025em;
+  --tracking-normal: 0em;
+  --tracking-wide: 0.025em;
+  --tracking-wider: 0.05em;
+  --tracking-widest: 0.1em;
+
+  --leading-tight: 1.25;
+  --leading-snug: 1.375;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.625;
+  --leading-loose: 2;
+
+  --input-padding-y: 0.75rem;
+  --input-padding-y-lg: 0.825rem;
+  --input-padding-y-sm: 0.55rem;
+
+  --input-border-radius: 0.475rem;
+  --input-border-radius-lg: 0.775rem;
+  --input-border-radius-sm: 0.275rem;
+}
+
+.tagify {
+  @apply inline-flex items-center gap-2 rounded-[var(--input-border-radius)] border border-gray-300 bg-white px-2 py-[var(--input-padding-y)] text-[0.9rem];
+}
+
+.tagify.form-control-lg {
+  @apply rounded-[var(--input-border-radius-lg)] px-2 py-[var(--input-padding-y-lg)] text-[1rem];
+}
+
+.tagify.form-control-sm {
+  @apply rounded-[var(--input-border-radius-sm)] px-2 py-[var(--input-padding-y-sm)] text-[0.8rem];
+}
+
+@layer components {
+  input {
+  }
+}
+
+@layer utilities {
+  .font-size-primary {
+    color: var(--primary);
+  }
+  .bg-secondary {
+    background-color: var(--secondary);
+  }
+  .rounded-custom {
+    border-radius: var(--rounded);
+  }
+}

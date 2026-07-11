@@ -1,0 +1,72 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>528d9c7c-cfcc-49fb-ba30-8cdea4502960</UserSecretsId>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <TypeScriptJSXEmit>react</TypeScriptJSXEmit>
+	  <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+	  <GenerateDocumentationFile>True</GenerateDocumentationFile>
+  </PropertyGroup>
+
+
+  <ItemGroup>
+    <PackageReference Include="AspNetCore.IServiceCollection.AddIUrlHelper" Version="1.1.0" />
+    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="10.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="9.0.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="9.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.7" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.7" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
+    <PackageReference Include="PdfPig" Version="0.1.11" />
+    <!--<PackageReference Include="SixLabors.ImageSharp" Version="3.1.11" />-->
+	  <PackageReference Include="SixLabors.ImageSharp" Version="3.1.12" />
+
+	  <PackageReference Include="SixLabors.ImageSharp.Drawing" Version="2.1.7" />
+    <PackageReference Include="SkiaSharp" Version="3.119.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="7.2.0" />
+    <PackageReference Include="Yarp.ReverseProxy" Version="2.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="src\app\components\AiChat\" />
+    <Folder Include="wwwroot\Files\" />
+    <Folder Include="wwwroot\tessdata\" />
+	<None Include="public\assets\files\prompts.json" CopyToOutputDirectory="Always" />	  
+  </ItemGroup>
+  <ItemGroup Condition=" '$(EnvironmentName)' == 'Development' AND '$(Configuration)' != 'Debug'">
+	<Content Remove="appsettings.Production.json" />
+	<Content Remove="appsettings.Local.json" />
+	<Content Remove="appsettings.json" />
+  </ItemGroup>
+
+	<ItemGroup Condition=" '$(EnvironmentName)' == 'Production' AND '$(Configuration)' != 'Debug'">
+	<Content Remove="appsettings.Development.json" />
+	<Content Remove="appsettings.Local.json" />
+	<Content Remove="appsettings.json" />
+ </ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\TeacherApp.Modules.KnowledgeBase\TeacherApp.Modules.KnowledgeBase.csproj" />
+	  <ProjectReference Include="..\TeacherApp.Modules.Account\TeacherApp.Modules.Account.csproj" />
+	  <ProjectReference Include="..\TeacherApp.Modules.Admin\TeacherApp.Modules.Admin.csproj" />
+	  <ProjectReference Include="..\TeacherApp.Modules.Email\TeacherApp.Modules.Email.csproj" />
+	  <ProjectReference Include="..\TeacherApp.Modules.Entities\TeacherApp.Modules.Entities.csproj" />
+	  <ProjectReference Include="..\TeacherApp.Modules.Helper\TeacherApp.Modules.Helper.csproj" />
+	  <ProjectReference Include="..\TeacherApp.Modules.Mapper\TeacherApp.Modules.Mapper.csproj" />
+	  <ProjectReference Include="..\TeacherApp.Modules.Repositories\TeacherApp.Modules.Repositories.csproj" />
+	</ItemGroup>
+
+
+	<PropertyGroup Condition=" '$(Configuration)' == '' Or '$(Configuration)' == 'Debug'">
+		<EnvironmentName>Development</EnvironmentName>
+	</PropertyGroup>
+
+	<!--<PropertyGroup Condition=" '$(Configuration)' != '' AND '$(Configuration)' != 'Debug' ">
+		<EnvironmentName>Production</EnvironmentName>
+	</PropertyGroup>-->
+
+</Project>

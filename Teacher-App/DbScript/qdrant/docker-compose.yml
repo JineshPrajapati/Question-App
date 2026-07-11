@@ -1,0 +1,26 @@
+version: "3.8"
+
+services:
+  qdrant:
+    image: qdrant/qdrant
+    container_name: qdrant
+    ports:
+      - "6005:6333"  # HostPort:ContainerPort
+    volumes:
+      - qdrant_data:/qdrant/storage
+
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    container_name: dotnet_api
+    depends_on:
+      - qdrant
+    environment:
+      Qdrant__Host: "http://qdrant"  # service name, not localhost
+      Qdrant__Port: "6333"           # container port
+    ports:
+      - "5000:8080"  # HostPort:ContainerPort
+
+volumes:
+  qdrant_data:

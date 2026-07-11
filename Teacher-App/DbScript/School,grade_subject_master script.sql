@@ -1,0 +1,188 @@
+
+
+------------------[dbo].[AcademicYear] 
+
+--GO
+--SET IDENTITY_INSERT [dbo].[AcademicYear] ON 
+--GO
+
+--INSERT [dbo].[AcademicYear] ([AcademicYearId], [AcademicYear], [IsCurrent]) VALUES (1, N'2025-2026', 1)
+--GO
+--INSERT [dbo].[AcademicYear] ([AcademicYearId], [AcademicYear], [IsCurrent]) VALUES (2, N'2026-2027', 0)
+--GO
+--INSERT [dbo].[AcademicYear] ([AcademicYearId], [AcademicYear], [IsCurrent]) VALUES (3, N'2027-2028', 0)
+--GO
+--INSERT [dbo].[AcademicYear] ([AcademicYearId], [AcademicYear], [IsCurrent]) VALUES (4, N'2028-2029', 0)
+--GO
+--INSERT [dbo].[AcademicYear] ([AcademicYearId], [AcademicYear], [IsCurrent]) VALUES (5, N'2029-2030', 0)
+--GO
+--INSERT [dbo].[AcademicYear] ([AcademicYearId], [AcademicYear], [IsCurrent]) VALUES (6, N'2030-2031', 0)
+--GO
+--INSERT [dbo].[AcademicYear] ([AcademicYearId], [AcademicYear], [IsCurrent]) VALUES (7, N'2031-2032', 0)
+--GO
+--INSERT [dbo].[AcademicYear] ([AcademicYearId], [AcademicYear], [IsCurrent]) VALUES (8, N'2032-2033', 0)
+--GO
+--INSERT [dbo].[AcademicYear] ([AcademicYearId], [AcademicYear], [IsCurrent]) VALUES (9, N'2033-2034', 0)
+--GO
+--INSERT [dbo].[AcademicYear] ([AcademicYearId], [AcademicYear], [IsCurrent]) VALUES (10, N'2034-2035', 0)
+--GO
+--SET IDENTITY_INSERT [dbo].[AcademicYear] OFF
+----------------------------------------------------------------------------------------------------------------
+
+
+--GO
+--SET IDENTITY_INSERT [dbo].[Schools] ON 
+--GO
+--GO
+--INSERT [dbo].[Schools] ([SchoolId], [SchoolCode], [Name], [Address], [StateId], [DistrictId], [CityId], [ZipCode], [Status], [Email], [ContactNumber], [CreatedBy], [CreatedDate],IsActive) VALUES (1, N'S-001', N'Brooklyn Academy', N'456 Flatbush Ave', 45, 2016, 3693, 11201, 1, N'brooklyn@academy.org', N'+1-212-000-2222', 1, CAST(N'2025-05-22T05:33:49.220' AS DateTime), 1)
+--GO
+--INSERT INTO Schools (
+--   [SchoolId], SchoolCode, Name, Address, StateId, DistrictId, CityId, ZipCode, Status,
+--    Email, ContactNumber, CreatedBy, CreatedDate, IsActive, IsDelete
+--)
+--VALUES (
+--   2, 'SCH001', 'Springfield Public School', '123 Green Avenue', 1, 1, 1, 123456, 1,
+--    'contact@springfieldschool.com', '9998887771', 1, GETDATE(), 1, 0
+--)
+--SET IDENTITY_INSERT [dbo].[Schools] OFF
+
+
+--GO
+--SET IDENTITY_INSERT [dbo].[Grades] ON 
+--GO
+--INSERT [dbo].[Grades] ([GradeId], [GradeCode], [GradeName], [GradeType], [DisplayOrder]) VALUES (1, N'K', N'Kindergarten', N'Elementary', 1)
+--GO
+--INSERT [dbo].[Grades] ([GradeId], [GradeCode], [GradeName], [GradeType], [DisplayOrder]) VALUES (2, N'1', N'1st Grade', N'Elementary', 2)
+--GO
+--INSERT [dbo].[Grades] ([GradeId], [GradeCode], [GradeName], [GradeType], [DisplayOrder]) VALUES (3, N'2', N'2nd Grade', N'Elementary', 3)
+--GO
+--INSERT [dbo].[Grades] ([GradeId], [GradeCode], [GradeName], [GradeType], [DisplayOrder]) VALUES (4, N'3', N'3rd Grade', N'Elementary', 4)
+--GO
+--INSERT [dbo].[Grades] ([GradeId], [GradeCode], [GradeName], [GradeType], [DisplayOrder]) VALUES (5, N'4', N'4th Grade', N'Elementary', 5)
+--GO
+--INSERT [dbo].[Grades] ([GradeId], [GradeCode], [GradeName], [GradeType], [DisplayOrder]) VALUES (6, N'5', N'5th Grade', N'Elementary', 6)
+--GO
+--INSERT [dbo].[Grades] ([GradeId], [GradeCode], [GradeName], [GradeType], [DisplayOrder]) VALUES (7, N'6', N'6th Grade', N'Middle School', 7)
+--GO
+--INSERT [dbo].[Grades] ([GradeId], [GradeCode], [GradeName], [GradeType], [DisplayOrder]) VALUES (8, N'7', N'7th Grade', N'Middle School', 8)
+--GO
+--INSERT [dbo].[Grades] ([GradeId], [GradeCode], [GradeName], [GradeType], [DisplayOrder]) VALUES (9, N'8', N'8th Grade', N'Middle School', 9)
+--GO
+--INSERT [dbo].[Grades] ([GradeId], [GradeCode], [GradeName], [GradeType], [DisplayOrder]) VALUES (10, N'9', N'9th Grade (Freshman)', N'High School', 10)
+--GO
+--INSERT [dbo].[Grades] ([GradeId], [GradeCode], [GradeName], [GradeType], [DisplayOrder]) VALUES (11, N'10', N'10th Grade (Sophomore)', N'High School', 11)
+--GO
+--INSERT [dbo].[Grades] ([GradeId], [GradeCode], [GradeName], [GradeType], [DisplayOrder]) VALUES (12, N'11', N'11th Grade (Junior)', N'High School', 12)
+--GO
+--INSERT [dbo].[Grades] ([GradeId], [GradeCode], [GradeName], [GradeType], [DisplayOrder]) VALUES (13, N'12', N'12th Grade (Senior)', N'High School', 13)
+--GO
+--INSERT [dbo].[Grades] ([GradeId], [GradeCode], [GradeName], [GradeType], [DisplayOrder]) VALUES (14, N'1st_Sem_IT', N'B.S. IT – 1st Semester', N'University', 14)
+--GO
+--INSERT [dbo].[Grades] ([GradeId], [GradeCode], [GradeName], [GradeType], [DisplayOrder]) VALUES (15, N'2nd_Sem_IT', N'B.S. IT – 2nd Semester', N'University', 15)
+--GO
+--SET IDENTITY_INSERT [dbo].[Grades] OFF
+
+--GO
+--SET IDENTITY_INSERT [dbo].[Subjects] ON 
+
+--GO
+--INSERT [dbo].[Subjects] ([SubjectId], [Subject], [SubjectCode]) VALUES (2, N'English', N'ENG')
+--GO
+--INSERT [dbo].[Subjects] ([SubjectId], [Subject], [SubjectCode]) VALUES (3, N'Grammer', N'GGG')
+--GO
+--INSERT [dbo].[Subjects] ([SubjectId], [Subject], [SubjectCode]) VALUES (4, N'English Language Arts', N'ELA')
+--GO
+--INSERT [dbo].[Subjects] ([SubjectId], [Subject], [SubjectCode]) VALUES (5, N'Mathematics', N'MATH')
+--GO
+--INSERT [dbo].[Subjects] ([SubjectId], [Subject], [SubjectCode]) VALUES (6, N'Art', N'AAA')
+--GO
+--INSERT [dbo].[Subjects] ([SubjectId], [Subject], [SubjectCode]) VALUES (7, N'Science', N'SCI')
+--GO
+--INSERT [dbo].[Subjects] ([SubjectId], [Subject], [SubjectCode]) VALUES (8, N'Social Studies', N'SS')
+--GO
+--INSERT [dbo].[Subjects] ([SubjectId], [Subject], [SubjectCode]) VALUES (9, N'Earth Science', N'ESE')
+--GO
+--INSERT [dbo].[Subjects] ([SubjectId], [Subject], [SubjectCode]) VALUES (10, N'Geography', N'GGH')
+--GO
+--INSERT [dbo].[Subjects] ([SubjectId], [Subject], [SubjectCode]) VALUES (11, N'Pre-Algebra', N'PPP')
+--GO
+--INSERT [dbo].[Subjects] ([SubjectId], [Subject], [SubjectCode]) VALUES (12, N'Civics', N'CCC')
+--GO
+--INSERT [dbo].[Subjects] ([SubjectId], [Subject], [SubjectCode]) VALUES (13, N'Life Science', N'LSL')
+--GO
+--INSERT [dbo].[Subjects] ([SubjectId], [Subject], [SubjectCode]) VALUES (14, N'Algebra I', N'AIA')
+--GO
+--INSERT [dbo].[Subjects] ([SubjectId], [Subject], [SubjectCode]) VALUES (15, N'Physical Science', N'PSP')
+--GO
+--INSERT [dbo].[Subjects] ([SubjectId], [Subject], [SubjectCode]) VALUES (16, N'US History', N'UHU')
+--GO
+--INSERT [dbo].[Subjects] ([SubjectId], [Subject], [SubjectCode]) VALUES (17, N'English I', N'EIE')
+--GO
+--INSERT [dbo].[Subjects] ([SubjectId], [Subject], [SubjectCode]) VALUES (18, N'Biology', N'BBB')
+--GO
+--INSERT [dbo].[Subjects] ([SubjectId], [Subject], [SubjectCode]) VALUES (19, N'World History', N'WHW')
+--GO
+--INSERT [dbo].[Subjects] ([SubjectId], [Subject], [SubjectCode]) VALUES (20, N'English II', N'EIE')
+--GO
+--INSERT [dbo].[Subjects] ([SubjectId], [Subject], [SubjectCode]) VALUES (21, N'Chemistry', N'CCC')
+--GO
+--INSERT [dbo].[Subjects] ([SubjectId], [Subject], [SubjectCode]) VALUES (22, N'Civics & Economics', N'C&E')
+--GO
+--INSERT [dbo].[Subjects] ([SubjectId], [Subject], [SubjectCode]) VALUES (23, N'Geometry', N'GGG')
+--GO
+--INSERT [dbo].[Subjects] ([SubjectId], [Subject], [SubjectCode]) VALUES (24, N'English III', N'EIE')
+--GO
+--INSERT [dbo].[Subjects] ([SubjectId], [Subject], [SubjectCode]) VALUES (25, N'Algebra II', N'AIA')
+--GO
+--INSERT [dbo].[Subjects] ([SubjectId], [Subject], [SubjectCode]) VALUES (26, N'Physics', N'PPP')
+--GO
+--INSERT [dbo].[Subjects] ([SubjectId], [Subject], [SubjectCode]) VALUES (27, N'English IV', N'EIE')
+--GO
+--INSERT [dbo].[Subjects] ([SubjectId], [Subject], [SubjectCode]) VALUES (28, N'Pre-Calculus', N'PPP')
+--GO
+--INSERT [dbo].[Subjects] ([SubjectId], [Subject], [SubjectCode]) VALUES (29, N'Environmental Science', N'ESE')
+--GO
+--INSERT [dbo].[Subjects] ([SubjectId], [Subject], [SubjectCode]) VALUES (30, N'Government', N'GGG')
+--GO
+--SET IDENTITY_INSERT [dbo].[Subjects] OFF
+--GO
+
+
+
+
+--GO
+--SET IDENTITY_INSERT [dbo].[SchoolGrades] ON 
+--GO
+
+---- Updated dates: 2025-08-15 to 2026-05-31
+--INSERT INTO [dbo].[SchoolGrades]
+--           ( [SchoolGradeId]
+--		   ,[GradeId]
+--		   , [SchoolId]
+--           ,[AcademicYearId]
+           
+--           ,[EffectiveFrom]
+--           ,[EffectiveTo]
+--           ,[IsCurrent]
+--           ,[CreatedDate]
+--           ,[CreatedBy]
+--       )
+--VALUES 
+--(1,1, 1, 1, '2025-08-15', '2026-05-31', 1, GETDATE(), 1), 
+--(2,2, 1, 1, '2025-08-15', '2026-05-31', 0,GETDATE(), 1),
+--(3,3, 1, 1, '2025-08-15', '2026-05-31', 0, GETDATE(), 1),
+--(4,4, 1, 1, '2025-08-15', '2026-05-31', 0, GETDATE(), 1),
+--(5,5, 1, 1, '2025-08-15', '2026-05-31', 0, GETDATE(), 1),
+--(6,6, 1, 1, '2025-08-15', '2026-05-31', 0, GETDATE(), 1),
+--(7,7, 1, 1, '2025-08-15', '2026-05-31', 0, GETDATE(), 1),
+--(8,8, 1, 1, '2025-08-15', '2026-05-31', 0, GETDATE(), 1),
+--(9,9, 1, 1, '2025-08-15', '2026-05-31', 0, GETDATE(), 1),
+--(10,10, 1, 1, '2025-08-15', '2026-05-31', 0,GETDATE(), 1),
+--(11,11, 1, 1, '2025-08-15', '2026-05-31', 0,GETDATE(), 1),
+--(12,12, 1, 1, '2025-08-15', '2026-05-31', 0,GETDATE(), 1),
+--(13,13, 1, 1, '2025-08-15', '2026-05-31', 0,GETDATE(), 1),
+--(14,14, 1,  1, '2025-08-15', '2025-12-20', 0,GETDATE(), 1),
+--(15,15, 1,  1, '2026-01-10', '2026-05-15', 0,GETDATE(), 1)
+--GO
+
+--SET IDENTITY_INSERT [dbo].[SchoolGrades] OFF

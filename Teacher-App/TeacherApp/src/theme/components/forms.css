@@ -1,0 +1,70 @@
+Form Control .form-control {
+  @apply shadow-none focus:ring-0 focus:outline-none;
+}
+
+/* Dropdown shown state */
+.dropdown.show .form-control {
+  @apply border-primary bg-white text-gray-900;
+}
+
+/* Readonly state */
+.form-control[readonly] {
+  @apply bg-gray-100;
+}
+
+/* Solid style */
+.form-control-solid {
+  @apply border-gray-200 bg-gray-200 text-gray-900 transition;
+}
+
+.dropdown.show .form-control-solid,
+.form-control-solid:active,
+.form-control-solid.active,
+.form-control-solid:focus,
+.form-control-solid.focus {
+  @apply border-gray-300 bg-gray-300 text-gray-900 transition;
+}
+
+/* White style */
+.form-control-white {
+  @apply border-white bg-white;
+}
+
+.dropdown.show .form-control-white,
+.form-control-white:active,
+.form-control-white.active,
+.form-control-white:focus,
+.form-control-white.focus {
+  @apply border-white bg-white;
+}
+
+/* Flush input (reset styles) */
+.form-control-flush {
+  @apply border-none bg-transparent shadow-none focus:ring-0 focus:outline-none;
+}
+
+/* Placeholder colors */
+.placeholder-gray-500::placeholder {
+  @apply text-gray-700;
+}
+
+.placeholder-white::placeholder {
+  @apply text-white;
+}
+
+/* Textarea no resize */
+.resize-none {
+  @apply resize-none;
+}
+
+.tagify {
+  @apply inline-flex items-center gap-2 rounded-[var(--input-border-radius)] border border-gray-300 bg-white px-2 py-[var(--input-padding-y)] text-[0.9rem];
+}
+
+.tagify.form-control-lg {
+  @apply rounded-[var(--input-border-radius-lg)] px-2 py-[var(--input-padding-y-lg)] text-[1rem];
+}
+
+.tagify.form-control-sm {
+  @apply rounded-[var(--input-border-radius-sm)] px-2 py-[var(--input-padding-y-sm)] text-[0.8rem];
+}

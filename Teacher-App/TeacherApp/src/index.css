@@ -1,0 +1,123 @@
+@import url("./theme/variables.css");
+@import url("./theme//components/forms.css");
+
+@layer base {
+  :root {
+    --input-padding-y: 0.75rem;
+    --input-padding-y-lg: 0.825rem;
+    --input-padding-y-sm: 0.55rem;
+    outline: var(--color-primary);
+    --input-border-radius: 0.475rem;
+    --input-border-radius-lg: 0.775rem;
+    --input-border-radius-sm: 0.275rem;
+  }
+  h1 {
+    font-size: var(--text-2xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-black);
+  }
+  h2 {
+    font-size: var(--text -xl);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-gray-950);
+  }
+  h2 {
+    font-size: var(--text -xl);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-gray-950);
+  }
+}
+
+@layer components {
+  .card {
+    background-color: var(--color-white);
+    border-radius: var(--rounded-lg);
+    padding: var(--spacing-6);
+    box-shadow: var(--shadow-xl);
+  }
+  .link-primary {
+    color: var(--color-primary);
+    @variant hover {
+      color: var(--color-primary);
+    }
+  }
+  .textbox-primary {
+  }
+  .container {
+  }
+}
+
+@utility scrollbar-hidden {
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.my-element {
+  background: white;
+  @variant dark {
+    @variant hover {
+      background: black;
+    }
+  }
+}
+
+:focus {
+  outline: var(--color-primary); /* Change this color */
+  outline-offset: 2px;
+}
+:root {
+  outline: var(--color-primary);
+
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  width: 100vw;
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  width: 100vw;
+  outline: var(--color-primary);
+
+  place-items: center;
+  justify-content: center;
+  min-width: 320px;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+}
+
+.scrollbar-thin {
+  scrollbar-width: 10;
+  scrollbar-color: var(--color-primary) #f1f1f1;
+}
+
+.step {
+  flex: 1;
+  text-align: center;
+  padding: 10px;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  transition: border-color 0.3s;
+}
+
+.step.active {
+  border-color: #4a90e2; /* Active step color */
+  font-weight: bold;
+}

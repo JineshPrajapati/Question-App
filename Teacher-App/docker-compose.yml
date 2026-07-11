@@ -1,0 +1,39 @@
+services:
+  teacherapp-api:
+    build:
+      context: .
+      dockerfile: TeacherApp/Dockerfile
+    container_name: teacherapp-api
+    ports:
+      - 5000:8080 # local:container
+    depends_on:
+      qdrant:
+        condition: service_healthy
+    environment:
+      Qdrant__Host: qdrant
+      Qdrant__Port: "6333"
+    networks:
+      - backend_net
+
+  qdrant:
+    image: qdrant/qdrant:latest
+    container_name: qdrant
+    ports:
+      - 6005:6333    
+    volumes:
+      - qdrant_data:/qdrant/storage
+    healthcheck:
+      test: ["CMD-SHELL", "curl -s http://localhost:6333/healthz | grep -q 'ok'"]
+      interval: 5s
+      timeout: 5s
+      retries: 20       # allows up to 100s total
+      start_period: 20s # wait before first health check
+    networks:
+      - backend_net
+
+volumes:
+  qdrant_data:
+
+networks:
+  backend_net:
+    driver: bridge
