@@ -26,16 +26,21 @@ export default function QuestionBlock({
     parsedOptions = [];
   }
 
+  const stripHtml = (html: string) => {
+    if (!html) return "";
+    return html.replace(/<[^>]+>/g, "").trim();
+  };
+
   let columnsCount = 1;
   if (
     parsedOptions.length === 4 &&
     parsedOptions.every((o) => !o.OptionImage)
   ) {
     const maxLen = Math.max(
-      ...parsedOptions.map((o) => (o.OptionText || "").length),
+      ...parsedOptions.map((o) => stripHtml(o.OptionText || "").length),
     );
-    if (maxLen < 18) columnsCount = 4;
-    else if (maxLen < 48) columnsCount = 2;
+    if (maxLen < 20) columnsCount = 4;
+    else if (maxLen < 60) columnsCount = 2;
   }
 
   const gridClass =
@@ -104,15 +109,7 @@ export default function QuestionBlock({
             </div>
           )}
           {parsedOptions.length > 0 && (
-            <div
-              className={gridClass}
-              style={{
-                display: "grid",
-                gap: "2px 16px",
-                marginTop: "3px",
-                marginLeft: "8px",
-              }}
-            >
+            <div className={gridClass}>
               {parsedOptions.map((opt: any) => (
                 <div
                   key={opt.QuestionOptionId}

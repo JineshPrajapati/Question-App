@@ -79,11 +79,11 @@ export default function QuestionPaper({
       questionNumber?: number;
       height: number;
     }> = [
-      //   {
-      //     type: "subject",
-      //     height: 10,
-      //   },
-    ];
+        //   {
+        //     type: "subject",
+        //     height: 10,
+        //   },
+      ];
 
     let globalQuestionNumber = 1;
     markSections.forEach((section, sectionIndex) => {
