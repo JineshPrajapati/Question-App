@@ -22,15 +22,17 @@ masterId   :number,
 };
 
 export const getQuestionsByTopics = async (
-  
-  topicIds: string
+  topicIds: string,
+  pageNumber: number = 1,
+  pageSize: number = 10
 ) => {
   const { data } = await axiosInstance.get(
     API_ENDPOINTS.GetQuestions,
     {
       params: {
-       
         TopicIds: topicIds,
+        PageNumber: pageNumber,
+        PageSize: pageSize,
       },
     }
   );

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
 import { useQuestionFiltersContext } from "../hooks/QuestionFiltersContext";
 import { MathJax } from "better-react-mathjax";
 import { Info } from "lucide-react";
@@ -9,8 +9,42 @@ import { createPortal } from "react-dom";
 import PrintTemplate from "./PrintTemplate";
 
 export default function QuestionSections() {
-  const { questions, chapterSubjectMap, filters, standards, chapters } =
-    useQuestionFiltersContext();
+  const {
+    questions,
+    chapterSubjectMap,
+    filters,
+    standards,
+    chapters,
+    hasMore,
+    loading,
+    loadMoreQuestions,
+  } = useQuestionFiltersContext();
+
+  const loadMoreRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (!hasMore || loading) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          loadMoreQuestions();
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    const currentRef = loadMoreRef.current;
+    if (currentRef) {
+      observer.observe(currentRef);
+    }
+
+    return () => {
+      if (currentRef) {
+        observer.unobserve(currentRef);
+      }
+    };
+  }, [hasMore, loading, loadMoreQuestions]);
 
   const selectedStdLabel = useMemo(() => {
     if (!filters?.standards || filters.standards.length === 0) return "";
@@ -213,43 +247,54 @@ export default function QuestionSections() {
                           )}
 
                           {/* OPTIONS */}
-                          {q.options && (
-                            <div className="mt-2 grid grid-cols-1 sm:grid-cols-2 gap-2">
-                              {JSON.parse(q.options).map((opt: any) => (
-                                <div
-                                  key={opt.QuestionOptionId}
-                                  className="flex items-start gap-3 border rounded-lg p-2"
-                                >
-                                  <div className="font-semibold">
-                                    {opt.Option}.
-                                  </div>
-
-                                  <div className="flex-1">
-                                    {opt.OptionText && (
-                                      <MathJax dynamic>
-                                        <div
-                                          dangerouslySetInnerHTML={{
-                                            __html: cleanMathML(opt.OptionText),
-                                          }}
+                          {q.options && (() => {
+                            const parsedOptions = JSON.parse(q.options);
+                            let columnsCount = 1;
+                            if (parsedOptions.length === 4 && parsedOptions.every((o: any) => !o.OptionImage)) {
+                              const maxLen = Math.max(...parsedOptions.map((o: any) => {
+                                const text = o.OptionText ? String(o.OptionText).replace(/<[^>]+>/g, "").trim() : "";
+                                return text.length;
+                              }));
+                              if (maxLen < 20) columnsCount = 4;
+                              else if (maxLen < 60) columnsCount = 2;
+                            }
+                            const gridColsClass = columnsCount === 4 ? "grid-cols-2 lg:grid-cols-4" : columnsCount === 2 ? "grid-cols-1 md:grid-cols-2" : "grid-cols-1";
+                            return (
+                              <div className={`mt-2 grid ${gridColsClass} gap-x-6 gap-y-2`}>
+                                {parsedOptions.map((opt: any) => (
+                                  <div
+                                    key={opt.QuestionOptionId}
+                                    className="flex items-start gap-2"
+                                  >
+                                    <div className="font-semibold text-gray-700">
+                                      {opt.Option}.
+                                    </div>
+                                    <div className="flex-1 text-gray-800">
+                                      {opt.OptionText && (
+                                        <MathJax dynamic>
+                                          <div
+                                            dangerouslySetInnerHTML={{
+                                              __html: cleanMathML(opt.OptionText),
+                                            }}
+                                          />
+                                        </MathJax>
+                                      )}
+                                      {/* Option Image */}
+                                      {opt.OptionImage && (
+                                        <img
+                                          src={`http://localhost:5000/${opt.OptionImage.replace(
+                                            "C:\\Teacher\\FTP\\dev\\",
+                                            "",
+                                          ).replace(/\\/g, "/")}`}
+                                          className="max-h-32 mt-1 object-contain"
                                         />
-                                      </MathJax>
-                                    )}
-
-                                    {/* Option Image */}
-                                    {opt.OptionImage && (
-                                      <img
-                                        src={`http://localhost:5000/${opt.OptionImage.replace(
-                                          "C:\\Teacher\\FTP\\dev\\",
-                                          "",
-                                        ).replace(/\\/g, "/")}`}
-                                        className="max-h-32 mt-2 object-contain"
-                                      />
-                                    )}
+                                      )}
+                                    </div>
                                   </div>
-                                </div>
-                              ))}
-                            </div>
-                          )}
+                                ))}
+                              </div>
+                            );
+                          })()}
 
                           {/* MARK */}
                           {selectedQuestions[q.questionId] && (
@@ -275,6 +320,17 @@ export default function QuestionSections() {
               </div>
             );
           })}
+
+          {/* Sentinel for infinite scroll */}
+          {hasMore && (
+            <div
+              ref={loadMoreRef}
+              className="py-6 flex items-center justify-center text-gray-500 font-medium text-sm gap-2"
+            >
+              <span className="animate-spin rounded-full h-5 w-5 border-b-2 border-blue-600"></span>
+              Loading more questions...
+            </div>
+          )}
         </div>
       </div>
 

@@ -43,6 +43,9 @@ export function useQuestionFilters() {
   const [topics, setTopics] = useState<Option[]>([]);
   const [groupedTopics, setGroupedTopics] = useState<GroupedTopic[]>([]);
   const [questions, setQuestions] = useState<any[]>([]);
+  const [pageNumber, setPageNumber] = useState<number>(1);
+  const [hasMore, setHasMore] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(false);
   const [chapterSubjectMap, setChapterSubjectMap] = useState<Record<number, string>>({});
 const [selectedMark, setSelectedMark] = useState<number>(1);
 const [selectedQuestions, setSelectedQuestions] = useState<SelectedQuestion[]>([]);
@@ -274,21 +277,55 @@ const [selectedQuestions, setSelectedQuestions] = useState<SelectedQuestion[]>([
  
   //Questions
   useEffect(() => {
-  if (!filters.topics.length) {
-    setQuestions([]);
-    return;
-  }
+    if (!filters.topics.length) {
+      setQuestions([]);
+      setHasMore(false);
+      setPageNumber(1);
+      return;
+    }
 
-  const topicIds = filters.topics.join(","); ; // single topic support
+    setLoading(true);
+    setPageNumber(1);
+    setHasMore(true);
+    const topicIds = filters.topics.join(",");
 
-    getQuestionsByTopics(topicIds)
+    getQuestionsByTopics(topicIds, 1, 10)
       .then((res) => {
-      setQuestions(res?.data ?? []);
-      setStep("questions"); // keep step on topic
-    })
-    .catch(() => setQuestions([]));
+        const initialQuestions = res?.data ?? [];
+        setQuestions(initialQuestions);
+        setStep("questions");
+        if (initialQuestions.length < 10) {
+          setHasMore(false);
+        }
+      })
+      .catch(() => {
+        setQuestions([]);
+        setHasMore(false);
+      })
+      .finally(() => setLoading(false));
+  }, [filters.topics]);
 
-}, [filters.topics]);
+  const loadMoreQuestions = () => {
+    if (loading || !hasMore || !filters.topics.length) return;
+    setLoading(true);
+    const nextPage = pageNumber + 1;
+    const topicIds = filters.topics.join(",");
+    getQuestionsByTopics(topicIds, nextPage, 10)
+      .then((res) => {
+        const newQuestions = res?.data ?? [];
+        if (newQuestions.length === 0) {
+          setHasMore(false);
+        } else {
+          setQuestions((prev) => [...prev, ...newQuestions]);
+          setPageNumber(nextPage);
+          if (newQuestions.length < 10) {
+            setHasMore(false);
+          }
+        }
+      })
+      .catch(() => {})
+      .finally(() => setLoading(false));
+  };
 
 
   
@@ -310,5 +347,8 @@ const [selectedQuestions, setSelectedQuestions] = useState<SelectedQuestion[]>([
     selectedQuestions,
     toggleQuestion,
     chapterSubjectMap,
+    hasMore,
+    loading,
+    loadMoreQuestions,
   };
 }

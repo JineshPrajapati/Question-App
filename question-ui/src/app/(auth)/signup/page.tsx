@@ -1,6 +1,5 @@
 "use client";
 
-import ClientLayout from "@/components/ClientLayout";
 import { useState } from "react";
 
 export default function SignupPage() {
@@ -15,7 +14,7 @@ export default function SignupPage() {
   };
 
   return (
-    <ClientLayout showFixedPart={false}>
+    <div className="min-h-screen w-full flex items-center justify-center bg-gray-100 p-4">
       <div className="w-full max-w-sm bg-white rounded-lg shadow-md p-6">
         <h1 className="text-2xl font-bold mb-4 text-center">Sign Up</h1>
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -66,6 +65,6 @@ export default function SignupPage() {
           </a>
         </p>
       </div>
-    </ClientLayout>
+    </div>
   );
 }

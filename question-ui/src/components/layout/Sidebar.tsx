@@ -1,6 +1,6 @@
 "use client";
 
-import { X } from "lucide-react"; // icon lib (lucide-react works great with Tailwind)
+import { X } from "lucide-react";
 
 export function Sidebar({
   isOpen,
@@ -10,30 +10,40 @@ export function Sidebar({
   onClose: () => void;
 }) {
   return (
-    <div
-      className={`absolute inset-y-0 left-0 z-40 w-64 bg-white shadow-lg transform transition-transform duration-300
-        ${isOpen ? "visible" : "invisible"} 
-        `}
-    >
-      {/* Close button (only on mobile) */}
-      <div className="flex items-center justify-between p-4 ">
-        <h2 className="text-lg font-semibold">Menu</h2>
-        <button onClick={onClose}>
+    <div className="h-full w-64 bg-white border-r border-gray-200 flex flex-col">
+      {/* Sidebar Header */}
+      <div className="flex items-center justify-between p-4 border-b border-gray-100">
+        <h2 className="text-lg font-bold text-blue-600">Menu</h2>
+        <button
+          type="button"
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            onClose();
+          }}
+          className="md:hidden p-2 -mr-2 rounded-lg hover:bg-gray-100 active:bg-gray-200 text-gray-600 transition cursor-pointer"
+        >
           <X className="h-6 w-6" />
         </button>
       </div>
 
-      {/* Sidebar content */}
-      <nav className="p-4 space-y-2">
-        <a href="/dashboard" className="block p-2 rounded hover:bg-gray-100">
+      {/* Sidebar Navigation */}
+      <nav className="p-4 space-y-1.5 flex-1 overflow-y-auto">
+        <a
+          href="/dashboard"
+          className="block px-4 py-2.5 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition font-medium text-sm"
+        >
           Dashboard
         </a>
-        <a href="/questions" className="block p-2 rounded hover:bg-gray-100">
+        <a
+          href="/questions"
+          className="block px-4 py-2.5 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition font-medium text-sm"
+        >
           Questions
         </a>
         <a
           href="/questionpaperpage"
-          className="block p-2 rounded hover:bg-gray-100"
+          className="block px-4 py-2.5 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition font-medium text-sm"
         >
           QuestionPaper
         </a>
