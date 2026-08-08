@@ -2,7 +2,6 @@
 
 import { useMemo } from "react";
 import AnswerKeyPaper from "./AnswerKeyPaper";
-import PageHeader from "./PageHeader";
 import QuestionPaper from "./QuestionPaper";
 import SolutionPaper from "./SolutionPaper";
 
@@ -124,6 +123,12 @@ export default function PrintTemplate({
     questions: groupedSubjects[subjectName] || [],
   }));
 
+  const borderWidth = isA5 ? "1.5px" : "2px";
+  const pageMargin = isA5 ? "8mm" : "10mm";
+  const contentWidth = isA5 ? "132mm" : "190mm";
+  const headerHeight = isA5 ? "8mm" : "10mm";
+  const footerFontSize = isA5 ? "9px" : "11px";
+
   return (
     <div
       className="print-container"
@@ -137,22 +142,73 @@ export default function PrintTemplate({
               html, body { margin: 0 !important; padding: 0 !important; background-color: #fff !important; }
               .print-container { width: 100% !important; max-width: 100% !important; margin: 0 !important; padding: 0 !important; }
               .print-avoid-break { break-inside: avoid; page-break-inside: avoid; }
+
+              .print-border-overlay {
+                position: fixed;
+                top: ${pageMargin};
+                left: ${pageMargin};
+                right: ${pageMargin};
+                bottom: ${pageMargin};
+                border: ${borderWidth} solid #000;
+                pointer-events: none;
+                z-index: 9999;
+              }
+
+              .print-running-header {
+                position: fixed;
+                top: ${pageMargin};
+                left: ${pageMargin};
+                right: ${pageMargin};
+                height: ${headerHeight};
+                border-bottom: 1px solid #000;
+                pointer-events: none;
+                z-index: 10000;
+                background: #fff;
+              }
+
+              .print-running-footer {
+                position: fixed;
+                bottom: ${pageMargin};
+                left: ${pageMargin};
+                right: ${pageMargin};
+                border-top: 1.5px solid #000;
+                text-align: center;
+                padding: 4px 0;
+                font-size: ${footerFontSize};
+                font-weight: bold;
+                pointer-events: none;
+                z-index: 10000;
+                background: #fff;
+              }
+
+              .print-running-footer::after {
+                content: "Page No : " counter(page);
+              }
+
+              .qp-first-header {
+                position: relative;
+                z-index: 10001;
+                background: #fff;
+              }
             }
-            .qp-page {
-              width: ${isA5 ? "132mm" : "190mm"};
-              margin: ${isA5 ? "8mm auto" : "10mm auto"} !important;
-              background-color: #fff;
-              border: ${isA5 ? "1.5px solid #000" : "2px solid #000"};
+
+            .qp-section {
+              width: ${contentWidth};
+              margin: ${pageMargin} auto;
               box-sizing: border-box;
-              page-break-after: always;
-              break-after: page;
+              padding: 0 4mm;
             }
+
             .qp-opts-1 { display: flex; flex-direction: column; gap: 2px; margin-top: 3px; margin-left: 8px; }
             .qp-opts-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 2px 16px; margin-top: 3px; margin-left: 8px; }
             .qp-opts-4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 2px 8px; margin-top: 3px; margin-left: 8px; }
           `,
         }}
       />
+
+      <div className="print-border-overlay" />
+      <div className="print-running-header" />
+      <div className="print-running-footer" />
 
       <QuestionPaper
         config={config}

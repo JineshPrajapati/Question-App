@@ -1,4 +1,3 @@
-import Page from "./Page";
 import PageFooter from "./PageFooter";
 import PageHeader from "./PageHeader";
 import QuestionBlock from "./QuestionBlock";
@@ -36,7 +35,6 @@ export default function QuestionPaper({
   cleanMathML,
 }: QuestionPaperProps) {
   const isA5 = config.pageSize === "A5";
-  const maxContentHeight = isA5 ? 145 : 205;
 
   const getMarkSections = (subjectQuestions: any[]) => {
     const sections: Record<number, any[]> = {};
@@ -45,157 +43,50 @@ export default function QuestionPaper({
       if (!sections[mark]) sections[mark] = [];
       sections[mark].push(q);
     });
-
     return Object.entries(sections)
       .sort(([a], [b]) => Number(a) - Number(b))
       .map(([mark, qs]) => ({ mark: Number(mark), questions: qs }));
   };
 
-  const pages: Array<{
-    pageNumber: number;
-    subjectName: string;
-    blocks: Array<{
-      type: "subject" | "section" | "question";
-      section?: { mark: number; questions: any[] };
-      sectionIndex?: number;
-      sectionTotal?: number;
-      partLetter?: string;
-      question?: any;
-      questionNumber?: number;
-      height: number;
-    }>;
-  }> = [];
-
-  let pageNumber = 1;
-  subjectGroups.forEach((subjectGroup) => {
-    const markSections = getMarkSections(subjectGroup.questions);
-    const blocks: Array<{
-      type: "subject" | "section" | "question";
-      section?: { mark: number; questions: any[] };
-      sectionIndex?: number;
-      sectionTotal?: number;
-      partLetter?: string;
-      question?: any;
-      questionNumber?: number;
-      height: number;
-    }> = [
-        //   {
-        //     type: "subject",
-        //     height: 10,
-        //   },
-      ];
-
-    let globalQuestionNumber = 1;
-    markSections.forEach((section, sectionIndex) => {
-      const sectionTotal = section.mark * section.questions.length;
-      const partLetter = String.fromCharCode(65 + sectionIndex);
-      blocks.push({
-        type: "section",
-        section,
-        sectionIndex,
-        sectionTotal,
-        partLetter,
-        height: 28,
-      });
-
-      section.questions.forEach((question) => {
-        blocks.push({
-          type: "question",
-          question,
-          questionNumber: globalQuestionNumber++,
-          height: 24,
-        });
-      });
-    });
-
-    let currentPageBlocks: Array<{
-      type: "subject" | "section" | "question";
-      section?: { mark: number; questions: any[] };
-      sectionIndex?: number;
-      sectionTotal?: number;
-      partLetter?: string;
-      question?: any;
-      questionNumber?: number;
-      height: number;
-    }> = [];
-    let currentHeight = 0;
-
-    const pushPage = () => {
-      if (currentPageBlocks.length > 0) {
-        pages.push({
-          pageNumber: pageNumber++,
-          subjectName: subjectGroup.subjectName,
-          blocks: currentPageBlocks,
-        });
-        currentPageBlocks = [];
-        currentHeight = 0;
-      }
-    };
-
-    blocks.forEach((block) => {
-      if (currentPageBlocks.length === 0) {
-        currentPageBlocks = [block];
-        currentHeight = block.height;
-        return;
-      }
-
-      if (currentHeight + block.height > maxContentHeight) {
-        pushPage();
-        currentPageBlocks = [block];
-        currentHeight = block.height;
-      } else {
-        currentPageBlocks.push(block);
-        currentHeight += block.height;
-      }
-    });
-
-    pushPage();
-  });
+  let globalQuestionNumber = 0;
 
   return (
     <div>
-      {pages.map((page) => (
-        <Page
-          key={`${page.subjectName}-${page.pageNumber}`}
-          pageSize={config.pageSize}
-          pageNumber={page.pageNumber}
-          header={
-            <PageHeader
-              pageSize={config.pageSize}
-              isFirstPage={page.pageNumber === 1}
-              title="Question Paper"
-              subtitle={config.subject || page.subjectName}
-              instituteName={
-                page.pageNumber === 1 ? config.instituteName : undefined
-              }
-              examName={page.pageNumber === 1 ? config.examName : undefined}
-              examDate={page.pageNumber === 1 ? config.examDate : undefined}
-              examTime={page.pageNumber === 1 ? config.examTime : undefined}
-              subject={config.subject || page.subjectName}
-              chapterNumber={chapterNumber}
-              totalMarks={
-                subjectGroups.find(
-                  (group) => group.subjectName === page.subjectName,
-                )?.totalMarks ?? 0
-              }
-              standardLabel={standardLabel}
-            />
-          }
-          footer={
-            <PageFooter
-              pageSize={config.pageSize}
-              pageNumber={page.pageNumber}
-            />
-          }
-        >
-          <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
-            {page.blocks.map((block, blockIndex) => {
-              if (block.type === "section") {
+      {subjectGroups.map((subjectGroup, sgIndex) => {
+        const markSections = getMarkSections(subjectGroup.questions);
+
+        return (
+          <div
+            key={subjectGroup.subjectName}
+            className="qp-section"
+            style={{ breakBefore: sgIndex > 0 ? "page" : "auto" }}
+          >
+            {sgIndex === 0 && (
+              <div className="qp-first-header">
+                <PageHeader
+                  pageSize={config.pageSize}
+                  isFirstPage={true}
+                  title="Question Paper"
+                  subtitle={config.subject || subjectGroup.subjectName}
+                  instituteName={config.instituteName}
+                  examName={config.examName}
+                  examDate={config.examDate}
+                  examTime={config.examTime}
+                  subject={config.subject || subjectGroup.subjectName}
+                  chapterNumber={chapterNumber}
+                  totalMarks={subjectGroup.totalMarks}
+                  standardLabel={standardLabel}
+                />
+              </div>
+            )}
+
+            <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+              {markSections.map((section, sectionIndex) => {
+                const sectionTotal = section.mark * section.questions.length;
+                const partLetter = String.fromCharCode(65 + sectionIndex);
+
                 return (
-                  <div
-                    key={`${page.pageNumber}-${blockIndex}`}
-                    style={{ marginBottom: "6px" }}
-                  >
+                  <div key={`${subjectGroup.subjectName}-${sectionIndex}`} style={{ marginBottom: "6px" }}>
                     <div
                       style={{
                         display: "flex",
@@ -223,7 +114,7 @@ export default function QuestionPaper({
                             letterSpacing: "1px",
                           }}
                         >
-                          PART {block.partLetter}
+                          PART {partLetter}
                         </span>
                       </div>
                       <div style={{ width: "60px" }} />
@@ -252,10 +143,10 @@ export default function QuestionPaper({
                         </span>
                         <span style={{ fontWeight: "bold" }}>
                           {isGujarati
-                            ? block.section?.mark === 1
+                            ? section.mark === 1
                               ? "નીચે આપેલા પ્રશ્નો માટે યોગ્ય વિકલ્પ પસંદ કરો."
                               : "નીચે આપેલા પ્રશ્નોના ઉત્તર આપો."
-                            : block.section?.mark === 1
+                            : section.mark === 1
                               ? "Choose the correct option for the following questions."
                               : "Answer the following questions."}
                         </span>
@@ -266,27 +157,30 @@ export default function QuestionPaper({
                           fontSize: isA5 ? "10px" : "13px",
                         }}
                       >
-                        [{block.sectionTotal}]
+                        [{sectionTotal}]
                       </span>
                     </div>
+
+                    {section.questions.map((question) => {
+                      globalQuestionNumber++;
+                      return (
+                        <QuestionBlock
+                          key={question.questionId}
+                          question={question}
+                          questionNumber={globalQuestionNumber}
+                          pageSize={config.pageSize}
+                          isGujarati={isGujarati}
+                          cleanMathML={cleanMathML}
+                        />
+                      );
+                    })}
                   </div>
                 );
-              }
-
-              return (
-                <QuestionBlock
-                  key={`${page.pageNumber}-${blockIndex}`}
-                  question={block.question}
-                  questionNumber={block.questionNumber ?? 1}
-                  pageSize={config.pageSize}
-                  isGujarati={isGujarati}
-                  cleanMathML={cleanMathML}
-                />
-              );
-            })}
+              })}
+            </div>
           </div>
-        </Page>
-      ))}
+        );
+      })}
     </div>
   );
 }

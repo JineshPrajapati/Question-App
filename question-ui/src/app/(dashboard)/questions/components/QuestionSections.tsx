@@ -170,10 +170,9 @@ export default function QuestionSections() {
               key={mark}
               onClick={() => setSelectedMark(mark)}
               className={`px-4 py-1 rounded-lg border transition
-                ${
-                  selectedMark === mark
-                    ? "bg-blue-600 text-white border-blue-600"
-                    : "bg-white text-gray-700 border-gray-300"
+                ${selectedMark === mark
+                  ? "bg-blue-600 text-white border-blue-600"
+                  : "bg-white text-gray-700 border-gray-300"
                 }`}
             >
               {mark} Mark
@@ -473,11 +472,10 @@ export default function QuestionSections() {
                       });
                     }
                   }}
-                  className={`w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none transition ${
-                    validationErrors.instituteName
+                  className={`w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none transition ${validationErrors.instituteName
                       ? "border-red-500 focus:ring-red-200"
                       : "border-gray-300"
-                  }`}
+                    }`}
                   placeholder="Enter institute name"
                 />
                 {validationErrors.instituteName && (
@@ -509,11 +507,10 @@ export default function QuestionSections() {
                       });
                     }
                   }}
-                  className={`w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none transition ${
-                    validationErrors.examName
+                  className={`w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none transition ${validationErrors.examName
                       ? "border-red-500 focus:ring-red-200"
                       : "border-gray-300"
-                  }`}
+                    }`}
                   placeholder="Enter exam name"
                 />
                 {validationErrors.examName && (
@@ -565,11 +562,10 @@ export default function QuestionSections() {
                       });
                     }
                   }}
-                  className={`w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none transition ${
-                    validationErrors.examDate
+                  className={`w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none transition ${validationErrors.examDate
                       ? "border-red-500 focus:ring-red-200"
                       : "border-gray-300"
-                  }`}
+                    }`}
                 />
                 {validationErrors.examDate && (
                   <p className="text-red-500 text-xs mt-1">
@@ -600,11 +596,10 @@ export default function QuestionSections() {
                       });
                     }
                   }}
-                  className={`w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none transition ${
-                    validationErrors.examTime
+                  className={`w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none transition ${validationErrors.examTime
                       ? "border-red-500 focus:ring-red-200"
                       : "border-gray-300"
-                  }`}
+                    }`}
                   placeholder="Example: 10:00 AM - 11:00 AM"
                 />
                 {validationErrors.examTime && (
